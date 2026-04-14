@@ -10,6 +10,7 @@ import TrainingScreen from './tabs/Training';
 import ProgressScreen from './tabs/Progress';
 import LabScreen from './tabs/Lab';
 import ProfileScreen from './tabs/Profile';
+import { NeuralBackground } from './components/NeuralBackground';
 
 function SplashScreen({ onComplete }: { onComplete: () => void }) {
   const [text, setText] = useState('');
@@ -109,6 +110,7 @@ export default function App() {
   return (
     <Router>
       <div className="relative h-screen w-screen overflow-hidden flex flex-col">
+        <NeuralBackground />
         <AnimatePresence>
           {showSplash && <SplashScreen onComplete={() => setShowSplash(false)} />}
         </AnimatePresence>
