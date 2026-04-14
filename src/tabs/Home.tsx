@@ -49,7 +49,7 @@ export default function Home() {
   return (
     <div className="px-6 pt-12">
       <header className="mb-8">
-        <h1 className="text-3xl font-bold tracking-tight">NEUROFLARE</h1>
+        <h1 className="text-3xl font-bold tracking-tight">MIDTRAN</h1>
         <p className="text-white/40 text-sm">Optimize your synaptic pathways.</p>
       </header>
 

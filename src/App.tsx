@@ -13,7 +13,7 @@ import ProfileScreen from './tabs/Profile';
 
 function SplashScreen({ onComplete }: { onComplete: () => void }) {
   const [text, setText] = useState('');
-  const fullText = 'NEUROFLARE';
+  const fullText = 'MIDTRAN';
 
   useEffect(() => {
     let i = 0;

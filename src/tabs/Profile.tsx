@@ -127,7 +127,7 @@ export default function Profile() {
       </section>
 
       <div className="mt-12 text-center">
-        <div className="text-[10px] uppercase tracking-[0.4em] text-white/20 font-bold">NEUROFLARE v1.0.0</div>
+        <div className="text-[10px] uppercase tracking-[0.4em] text-white/20 font-bold">MIDTRAN v1.0.0</div>
       </div>
     </div>
   );
