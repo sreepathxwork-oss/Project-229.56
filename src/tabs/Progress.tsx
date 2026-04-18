@@ -73,75 +73,94 @@ export default function Progress() {
   }, [lastSession]);
 
   return (
-    <div className="px-6 pt-12 pb-8">
-      <header className="mb-8">
-        <h1 className="text-3xl font-bold tracking-tight">PROGRESS</h1>
-        <p className="text-white/40 text-sm">Analyze your cognitive evolution.</p>
+    <div className="px-6 pt-12 pb-24">
+      <header className="mb-8 pl-1">
+        <h1 className="text-3xl font-black tracking-tighter bg-gradient-to-r from-neon-cyan via-electric-purple to-magenta-glow bg-clip-text text-transparent">
+          NEURAL AUDIT
+        </h1>
+        <p className="text-[10px] font-bold text-white/30 tracking-[0.4em] uppercase">Cognitive Evolution Tracking</p>
       </header>
 
       <Heatmap />
 
       <section className="mb-8">
-        <div className="flex items-center justify-between mb-4 px-1">
-          <h2 className="text-xs uppercase tracking-widest text-white/40">Tap Distribution</h2>
-          <div className="text-[10px] text-neon-cyan font-mono">DRIFT SCORE: {cognitiveDrift}</div>
+        <div className="flex items-center justify-between mb-5 px-1">
+          <h2 className="text-[10px] uppercase tracking-[0.3em] text-white/30 font-bold">Latency Distribution</h2>
+          <div className="text-[9px] text-neon-cyan font-black tracking-tighter bg-neon-cyan/10 px-2 py-0.5 rounded-full">DRIFT: {cognitiveDrift}</div>
         </div>
-        <div className="glass p-4 rounded-3xl h-64 w-full">
+        <div className="glass p-5 rounded-[2.5rem] h-64 w-full relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-neon-cyan/5 via-transparent to-magenta-glow/5 pointer-events-none" />
           {chartData.length > 0 ? (
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={chartData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
+                <defs>
+                  <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="#00E5FF" />
+                    <stop offset="50%" stopColor="#BF00FF" />
+                    <stop offset="100%" stopColor="#FF00FF" />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.03)" vertical={false} />
                 <XAxis 
                   dataKey="index" 
-                  stroke="rgba(255,255,255,0.3)" 
-                  fontSize={10} 
+                  stroke="rgba(255,255,255,0.2)" 
+                  fontSize={8} 
                   tickLine={false} 
                   axisLine={false}
+                  dy={10}
                 />
                 <YAxis 
-                  stroke="rgba(255,255,255,0.3)" 
-                  fontSize={10} 
+                  stroke="rgba(255,255,255,0.2)" 
+                  fontSize={8} 
                   tickLine={false} 
                   axisLine={false}
                   unit="s"
+                  dx={-10}
                 />
                 <Tooltip 
-                  contentStyle={{ backgroundColor: '#1A1A24', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px' }}
-                  itemStyle={{ color: '#00F0FF' }}
+                  contentStyle={{ 
+                    backgroundColor: 'rgba(13, 13, 18, 0.9)', 
+                    border: '1px solid rgba(255,255,255,0.1)', 
+                    borderRadius: '24px',
+                    backdropFilter: 'blur(10px)',
+                    fontSize: '10px'
+                  }}
+                  itemStyle={{ color: '#00E5FF', fontWeight: 'bold' }}
                 />
                 <Line 
                   type="monotone" 
                   dataKey="duration" 
-                  stroke="#00F0FF" 
-                  strokeWidth={3} 
-                  dot={{ fill: '#00F0FF', r: 4 }}
+                  stroke="url(#lineGrad)" 
+                  strokeWidth={4} 
+                  dot={{ fill: '#00E5FF', r: 4, strokeWidth: 2, stroke: '#030308' }}
                   activeDot={{ r: 6, stroke: '#fff', strokeWidth: 2 }}
+                  animationDuration={800}
                 />
               </LineChart>
             </ResponsiveContainer>
           ) : (
-            <div className="h-full flex items-center justify-center text-white/20 text-sm italic">
-              Complete a session to see data
+            <div className="h-full flex items-center justify-center text-white/20 text-[10px] uppercase font-bold tracking-widest italic">
+              Awaiting First Sequence...
             </div>
           )}
         </div>
       </section>
 
       <section className="grid grid-cols-2 gap-4 mb-8">
-        <div className="glass p-6 rounded-3xl">
-          <Trophy className="text-neon-cyan mb-2" size={24} />
-          <div className="text-[10px] uppercase tracking-widest text-white/40 mb-1">Best 5x5</div>
-          <div className="text-xl font-bold">
+        <motion.div whileHover={{ y: -3 }} className="glass p-6 rounded-[2rem] border-white/[0.05]">
+          <Trophy className="text-vibrant-gold mb-3" size={24} />
+          <div className="text-[9px] uppercase tracking-widest text-white/30 font-bold mb-1">Peak Reflex</div>
+          <div className="text-2xl font-black italic tracking-tighter text-white">
             {stats.personalBests['Standard_5'] ? (stats.personalBests['Standard_5'] / 1000).toFixed(2) + 's' : '--'}
           </div>
-        </div>
-        <div className="glass p-6 rounded-3xl">
-          <Zap className="text-magenta-glow mb-2" size={24} />
-          <div className="text-[10px] uppercase tracking-widest text-white/40 mb-1">Total Taps</div>
-          <div className="text-xl font-bold">
+        </motion.div>
+        <motion.div whileHover={{ y: -3 }} className="glass p-6 rounded-[2rem] border-white/[0.05]">
+          <Zap className="text-magenta-glow mb-3" size={24} />
+          <div className="text-[9px] uppercase tracking-widest text-white/30 font-bold mb-1">Total Pulses</div>
+          <div className="text-2xl font-black italic tracking-tighter text-white">
             {stats.dailyRuns.reduce((acc, r) => acc + r.size * r.size, 0)}
           </div>
-        </div>
+        </motion.div>
       </section>
 
       <section className="glass p-6 rounded-3xl">

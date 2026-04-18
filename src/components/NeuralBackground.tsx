@@ -8,8 +8,8 @@ extend({ UnrealBloomPass });
 
 const ParticleSwarm = () => {
   const meshRef = useRef<THREE.InstancedMesh>(null);
-  const count = 12000; // Slightly reduced for performance as a background
-  const speedMult = 0.5; // Slower for a more ambient background feel
+  const count = 4000; // Optimized for performance while maintaining visual density
+  const speedMult = 0.4;
   const dummy = useMemo(() => new THREE.Object3D(), []);
   const target = useMemo(() => new THREE.Vector3(), []);
   const pColor = useMemo(() => new THREE.Color(), []);
@@ -21,27 +21,21 @@ const ParticleSwarm = () => {
      return pos;
   }, [count]);
 
-  const material = useMemo(() => new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.6 }), []);
-  const geometry = useMemo(() => new THREE.TetrahedronGeometry(0.15), []);
+  const material = useMemo(() => new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.7 }), []);
+  const geometry = useMemo(() => new THREE.TetrahedronGeometry(0.18), []);
 
-  const PARAMS = useMemo(() => ({"nodes":2.26,"activity":0.419,"geometry":18.5}), []);
-  const addControl = (id: string, _l: string, _min: number, _max: number, val: number) => {
-      return (PARAMS as any)[id] !== undefined ? (PARAMS as any)[id] : val;
-  };
+  const nodes = 3;
+  const activity = 0.6;
+  const geometryVal = 22;
 
   useFrame((state) => {
     if (!meshRef.current) return;
     const time = state.clock.getElapsedTime() * speedMult;
     
-    // Subtle scene rotation
-    meshRef.current.rotation.y = time * 0.1;
-    meshRef.current.rotation.x = Math.sin(time * 0.05) * 0.1;
+    meshRef.current.rotation.y = time * 0.08;
+    meshRef.current.rotation.x = Math.sin(time * 0.04) * 0.06;
 
     for (let i = 0; i < count; i++) {
-        const nodes = addControl("nodes", "Synaptic Density", 1, 10, 5);
-        const activity = addControl("activity", "Neural Pulse", 0.1, 3.0, 1.2);
-        const geometryVal = addControl("geometry", "Core Coherence", 5.0, 50.0, 25.0);
-        
         const t = time * activity;
         const idxRatio = i / count;
         
@@ -53,32 +47,29 @@ const ParticleSwarm = () => {
         const theta = pRatio * Math.PI * 2.0;
         const phi = Math.acos(2.0 * ((pIndex + 0.5) / (count / nodes)) - 1.0);
         
-        const layerRadius = geometryVal * (layerNorm + 0.5);
-        const pulse = Math.sin(t + layerNorm * Math.PI) * 2.0;
+        const layerRadius = geometryVal * (layerNorm + 0.4);
+        const pulse = Math.sin(t + layerNorm * Math.PI) * 1.5;
         
-        const streamX = Math.sin(phi) * Math.cos(theta + t * (layerNorm + 0.2));
-        const streamY = Math.sin(phi) * Math.sin(theta + t * (layerNorm + 0.2));
+        const streamX = Math.sin(phi) * Math.cos(theta + t * (layerNorm + 0.3));
+        const streamY = Math.sin(phi) * Math.sin(theta + t * (layerNorm + 0.3));
         const streamZ = Math.cos(phi);
         
-        const noise = Math.sin(i * 0.5 + t * 5.0) * (0.5 * layerNorm);
+        const noise = Math.sin(i * 0.5 + t * 4.0) * (0.8 * layerNorm);
         const r = layerRadius + pulse + noise;
         
-        const posX = streamX * r;
-        const posY = streamY * r;
-        const posZ = streamZ * r;
+        target.set(streamX * r, streamY * r, streamZ * r);
         
-        const activation = Math.pow(Math.abs(Math.sin(idxRatio * 100.0 + t * 2.0)), 20.0);
-        const spark = activation * 0.5;
+        const activation = Math.pow(Math.abs(Math.sin(idxRatio * 80.0 + t * 2.5)), 15.0);
+        const spark = activation * 0.6;
         
-        target.set(posX, posY, posZ);
+        // Vibrant creative color shifts (Cycling through Cyan, Magenta, Purple, Gold)
+        const baseHue = (0.5 + (layerNorm * 0.3) + (time * 0.05)) % 1.0; 
+        const saturation = 0.9;
+        const lightness = 0.15 + (layerNorm * 0.25) + spark;
         
-        const baseHue = 0.55 + (layerNorm * 0.15); 
-        const saturation = 0.8;
-        const lightness = 0.1 + (layerNorm * 0.2) + spark;
+        color.setHSL(baseHue, saturation, Math.min(lightness, 1.0));
         
-        color.setHSL(baseHue % 1.0, saturation, Math.min(lightness, 1.0));
-        
-        positions[i].lerp(target, 0.05);
+        positions[i].lerp(target, 0.08);
         dummy.position.copy(positions[i]);
         dummy.updateMatrix();
         meshRef.current.setMatrixAt(i, dummy.matrix);

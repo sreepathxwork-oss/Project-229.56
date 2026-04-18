@@ -149,6 +149,8 @@ export default function Training() {
     };
   }, [startTime, isPaused, isComplete, timeLeft]);
 
+  const completedSet = useMemo(() => new Set(taps.map(t => t.number)), [taps]);
+
   const handleTap = (num: number, e: React.MouseEvent) => {
     if (isPaused || isComplete) return;
 
@@ -163,7 +165,7 @@ export default function Training() {
       const primes = getPrimes();
       const currentPrimesTapped = taps.filter(t => isPrime(t.number)).length;
       if (currentPrimesTapped < primes.length) {
-        isCorrect = isPrime(num) && !taps.some(t => t.number === num);
+        isCorrect = isPrime(num) && !completedSet.has(num);
       } else {
         const nonPrimes = Array.from({ length: size * size }, (_, i) => i + 1).filter(n => !isPrime(n));
         const currentNonPrimesTapped = taps.filter(t => !isPrime(t.number)).length;
@@ -332,8 +334,9 @@ export default function Training() {
             />
             <defs>
               <linearGradient id="timerGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#00F0FF" />
-                <stop offset="100%" stopColor="#FF007F" />
+                <stop offset="0%" stopColor="#00E5FF" />
+                <stop offset="50%" stopColor="#BF00FF" />
+                <stop offset="100%" stopColor="#FF00FF" />
               </linearGradient>
             </defs>
           </svg>
@@ -346,9 +349,9 @@ export default function Training() {
 
       <div className="flex-1 flex flex-col items-center justify-center gap-4">
         <div className="text-center">
-          <div className="text-xs uppercase tracking-[0.2em] text-white/40 mb-1">Current Streak</div>
-          <div className="text-2xl font-bold text-magenta-glow drop-shadow-[0_0_8px_rgba(255,0,127,0.5)]">
-            Synaptic Chain x{streak}
+          <div className="text-[10px] uppercase tracking-[0.4em] text-white/30 font-bold mb-1">Synaptic Chain</div>
+          <div className="text-3xl font-black italic bg-gradient-to-r from-neon-cyan via-electric-purple to-magenta-glow bg-clip-text text-transparent drop-shadow-[0_0_15px_rgba(191,0,255,0.4)]">
+            x{streak}
           </div>
         </div>
 
@@ -440,10 +443,10 @@ export default function Training() {
                   opacity: isVisible ? (mode === 'Eclipse' && nextNumber > 3 && !isCompleted && num !== nextNumber ? 0.5 : 1) : 0,
                 }}
                 transition={{ 
-                  scale: mode === 'Doppler Effect' ? { duration: 1 + (num % 3), repeat: Infinity } : { duration: 0.3 },
-                  backgroundColor: { type: "spring", damping: 12, stiffness: 200 },
-                  borderColor: { type: "spring", damping: 12, stiffness: 200 },
-                  opacity: { duration: 0.2 }
+                  scale: mode === 'Doppler Effect' ? { duration: 0.8 + (num % 2), repeat: Infinity } : { duration: 0.15 },
+                  backgroundColor: { type: "spring", stiffness: 450, damping: 25 },
+                  borderColor: { type: "spring", stiffness: 450, damping: 25 },
+                  opacity: { duration: 0.15 }
                 }}
                 onClick={(e) => handleTap(num, e)}
                 className={`relative rounded-2xl flex items-center justify-center font-bold border transition-all duration-300 ${

@@ -52,46 +52,47 @@ const ADVANCED_MODES: ModeCardProps[] = [
 
 function ModeCard({ mode, onClick }: any) {
   return (
-    <div 
+    <motion.div 
+      whileHover={{ y: -4, scale: 1.02 }}
+      whileTap={{ scale: 0.96 }}
+      transition={{ type: "spring", stiffness: 500, damping: 15 }}
       onClick={onClick}
-      className="glass p-5 rounded-3xl flex flex-col gap-3 cursor-pointer hover:neon-border transition-all group relative overflow-hidden"
+      className="glass p-5 rounded-[2.5rem] flex flex-col gap-3 cursor-pointer hover:neon-border transition-all group relative overflow-hidden h-full"
     >
       <div className="flex items-center justify-between">
-        <div className={`p-2.5 rounded-xl bg-void ${mode.color} group-hover:scale-110 transition-transform`}>
-          <mode.icon size={20} />
+        <div className={`p-2.5 rounded-xl bg-void/50 ${mode.color} group-hover:scale-110 transition-transform duration-150`}>
+          <mode.icon size={18} />
         </div>
-        <span className="text-[9px] uppercase tracking-widest text-white/20 font-bold">{mode.category}</span>
+        <span className="text-[8px] uppercase tracking-[0.2em] text-white/20 font-black">{mode.category}</span>
       </div>
       <div>
-        <div className="font-bold text-sm mb-1 group-hover:text-neon-cyan transition-colors">{mode.title}</div>
-        <div className="text-[11px] text-white/40 leading-relaxed">{mode.description}</div>
+        <div className="font-bold text-sm mb-1 group-hover:text-neon-cyan transition-colors duration-150">{mode.title}</div>
+        <div className="text-[10px] text-white/40 leading-relaxed font-medium">{mode.description}</div>
       </div>
-      <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
-        <ChevronRight size={14} className="text-neon-cyan" />
-      </div>
-    </div>
+    </motion.div>
   );
 }
 
 function Toggle({ active, onToggle, icon: Icon, label, description }: any) {
   return (
-    <div className="glass p-6 rounded-3xl flex items-center justify-between mb-4">
+    <div className="glass p-5 rounded-[2rem] flex items-center justify-between mb-4 border-white/[0.05]">
       <div className="flex items-center gap-4">
-        <div className={`p-3 rounded-xl ${active ? 'bg-neon-cyan/20 text-neon-cyan' : 'bg-white/5 text-white/40'}`}>
-          <Icon size={24} />
+        <div className={`p-3 rounded-2xl ${active ? 'bg-neon-cyan/20 text-neon-cyan' : 'bg-white/5 text-white/30'}`}>
+          <Icon size={22} />
         </div>
         <div>
-          <div className="font-bold">{label}</div>
-          <div className="text-xs text-white/40">{description}</div>
+          <div className="font-bold text-sm tracking-tight">{label}</div>
+          <div className="text-[10px] text-white/30 uppercase tracking-widest font-bold">{description}</div>
         </div>
       </div>
       <button
         onClick={onToggle}
-        className={`w-14 h-8 rounded-full relative transition-colors duration-300 ${active ? 'bg-neon-cyan' : 'bg-white/10'}`}
+        className={`w-12 h-7 rounded-full relative transition-colors duration-200 ${active ? 'bg-neon-cyan shadow-[0_0_15px_rgba(0,229,255,0.4)]' : 'bg-white/10'}`}
       >
         <motion.div
-          animate={{ x: active ? 26 : 4 }}
-          className="absolute top-1 w-6 h-6 bg-white rounded-full shadow-lg"
+          animate={{ x: active ? 22 : 4 }}
+          transition={{ type: "spring", stiffness: 500, damping: 30 }}
+          className="absolute top-1 w-5 h-5 bg-white rounded-full shadow-lg"
         />
       </button>
     </div>
@@ -108,13 +109,19 @@ export default function Lab() {
 
   return (
     <div className="px-6 pt-12 pb-24">
-      <header className="mb-8 flex items-center gap-4">
-        <button onClick={() => navigate(-1)} className="p-2 glass rounded-full">
-          <ArrowLeft size={20} />
-        </button>
+      <header className="mb-8 flex items-center gap-4 pl-1">
+        <motion.button 
+          whileTap={{ scale: 0.9 }}
+          onClick={() => navigate(-1)} 
+          className="p-2.5 glass rounded-full hover:bg-white/10"
+        >
+          <ArrowLeft size={18} />
+        </motion.button>
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">THE LAB</h1>
-          <p className="text-white/40 text-sm">Experimental cognitive protocols.</p>
+          <h1 className="text-3xl font-black tracking-tighter bg-gradient-to-r from-neon-cyan via-electric-purple to-magenta-glow bg-clip-text text-transparent">
+            THE LAB
+          </h1>
+          <p className="text-[10px] font-bold text-white/30 uppercase tracking-[0.3em]">Experimental Protocols</p>
         </div>
       </header>
 

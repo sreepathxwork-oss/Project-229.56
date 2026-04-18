@@ -3,30 +3,42 @@
 
 @theme {
   --font-sans: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
-  --color-void: #0A0A0F;
-  --color-neon-cyan: #00F0FF;
-  --color-magenta-glow: #FF007F;
-  --color-charcoal: #1A1A24;
+  --color-void: #030308;
+  --color-neon-cyan: #00E5FF;
+  --color-magenta-glow: #FF00FF;
+  --color-electric-purple: #BF00FF;
+  --color-vibrant-gold: #FFD700;
+  --color-charcoal: #0D0D12;
   --color-success-green: #00FFAD;
-  --color-error-red: #FF3333;
+  --color-error-red: #FF3D70;
 }
 
 @layer base {
   body {
-    @apply bg-void text-white font-sans antialiased overflow-hidden;
+    @apply bg-void text-white font-sans antialiased overflow-hidden selection:bg-neon-cyan/30;
   }
 }
 
 .glass {
-  @apply bg-white/5 backdrop-blur-xl border border-white/10;
+  @apply bg-white/[0.03] backdrop-blur-2xl border border-white/[0.08] shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)];
+}
+
+.glass-vibrant {
+  @apply relative overflow-hidden;
+  background: linear-gradient(135deg, rgba(0, 229, 255, 0.05) 0%, rgba(191, 0, 255, 0.05) 50%, rgba(255, 0, 255, 0.05) 100%);
+  @apply backdrop-blur-2xl border border-white/[0.1] shadow-2xl;
 }
 
 .neon-border {
-  @apply border-neon-cyan/40 shadow-[0_0_15px_rgba(0,240,255,0.2)];
+  @apply border-neon-cyan/50 shadow-[0_0_20px_rgba(0,229,255,0.3)];
 }
 
 .magenta-glow {
-  @apply shadow-[0_0_20px_rgba(255,0,127,0.4)];
+  @apply shadow-[0_0_30px_rgba(255,0,255,0.4)];
+}
+
+.purple-glow {
+  @apply shadow-[0_0_25px_rgba(191,0,255,0.3)];
 }
 
 /* Custom scrollbar for web mobile feel */

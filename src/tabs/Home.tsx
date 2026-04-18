@@ -48,35 +48,45 @@ export default function Home() {
 
   return (
     <div className="px-6 pt-12">
-      <header className="mb-8">
-        <h1 className="text-3xl font-bold tracking-tight">MIDTRAN</h1>
-        <p className="text-white/40 text-sm">Optimize your synaptic pathways.</p>
+      <header className="mb-8 pl-1">
+        <h1 className="text-4xl font-black italic tracking-tighter bg-gradient-to-br from-neon-cyan via-electric-purple to-magenta-glow bg-clip-text text-transparent drop-shadow-[0_4px_12px_rgba(191,0,255,0.3)]">
+          MIDTRAN
+        </h1>
+        <p className="text-[10px] font-bold text-white/40 tracking-[0.4em] uppercase mt-1">
+          Neural Matrix Training
+        </p>
       </header>
 
       <NeuralWeather />
 
       <section className="mb-8">
-        <h2 className="text-xs uppercase tracking-widest text-white/40 mb-4 px-1">Quick Start</h2>
+        <div className="flex items-center justify-between mb-5 px-1">
+          <h2 className="text-[10px] uppercase tracking-[0.3em] text-white/30 font-bold">Synaptic Protocols</h2>
+          <div className="h-[1px] flex-1 bg-white/5 ml-4" />
+        </div>
         <div className="grid grid-cols-1 gap-4">
           {quickStart.map((item) => (
-            <button
+            <motion.button
               key={item.title}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}
               onClick={() => navigate('/training', { state: { size: item.size, mode: item.mode } })}
-              className="glass p-6 rounded-2xl flex items-center justify-between group hover:neon-border transition-all"
+              className="glass p-5 rounded-[2rem] flex items-center justify-between group relative overflow-hidden active:bg-white/[0.05]"
             >
-              <div className="flex items-center gap-4">
-                <div className={`p-3 rounded-xl bg-white/5 ${item.color}`}>
-                  <item.icon size={24} />
+              <div className="flex items-center gap-5 relative z-10">
+                <div className={`p-3.5 rounded-2xl ${item.color} bg-void/40 backdrop-blur-sm group-hover:scale-110 transition-transform duration-200`}>
+                  <item.icon size={22} />
                 </div>
                 <div className="text-left">
-                  <div className="font-bold text-lg">{item.title}</div>
-                  <div className="text-xs text-white/40">{item.size}x{item.size} Grid</div>
+                  <div className="font-bold text-base group-hover:text-neon-cyan transition-colors">{item.title}</div>
+                  <div className="text-[10px] uppercase font-bold tracking-widest text-white/20">{item.size}x{item.size} Interface</div>
                 </div>
               </div>
-              <div className="opacity-0 group-hover:opacity-100 transition-opacity">
-                <Zap size={20} className="text-neon-cyan" />
+              <div className={`p-2 rounded-full bg-white/5 opacity-0 group-hover:opacity-100 group-hover:bg-neon-cyan/20 transition-all duration-200`}>
+                <Zap size={16} className="text-neon-cyan" />
               </div>
-            </button>
+            </motion.button>
           ))}
         </div>
       </section>
